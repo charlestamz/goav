@@ -126,6 +126,13 @@ func (c *Codec) AvCodecNext() *Codec {
 	//return (*Codec)(C.av_codec_next((*C.struct_AVCodec)(c)))
 }
 
+//Register all the codecs, parsers and bitstream filters which were enabled at configuration time.
+func AvcodecRegisterAll() {
+	C.av_register_all()
+	C.avcodec_register_all()
+	// C.av_log_set_level(0xffff)
+}
+
 //Register the codec codec and initialize libavcodec.
 func (c *Codec) AvcodecRegister() {
 	panic("deprecated")
