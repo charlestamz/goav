@@ -16,10 +16,9 @@ package avformat
 //#include <libavcodec/avcodec.h>
 import "C"
 import (
+	"github.com/charlestamz/goav/avutil"
 	"reflect"
 	"unsafe"
-
-	"github.com/charlestamz/goav/avutil"
 )
 
 func (cctxt *CodecContext) Type() MediaType {
