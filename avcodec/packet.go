@@ -9,7 +9,7 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/asticode/goav/avutil"
+	"github.com/charlestamz/goav/avutil"
 )
 
 func AvPacketAlloc() *Packet {
