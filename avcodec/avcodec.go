@@ -15,6 +15,15 @@ package avcodec
 //#include <libavcodec/avcodec.h>
 //#include <libavutil/avutil.h>
 //#include <libavutil/frame.h>
+//void register_codecs(){
+//#if LIBAVCODEC_VERSION_MAJOR < 58
+//	  av_register_all();
+//	  avcodec_register_all();
+//#endif
+//}
+//
+//
+//
 import "C"
 import (
 	"unsafe"
@@ -128,9 +137,8 @@ func (c *Codec) AvCodecNext() *Codec {
 
 //Register all the codecs, parsers and bitstream filters which were enabled at configuration time.
 func AvcodecRegisterAll() {
-	C.av_register_all()
-	C.avcodec_register_all()
-	// C.av_log_set_level(0xffff)
+	//for ffmpeg version < 4, not to call deprecated functions
+	C.register_codecs()
 }
 
 //Register the codec codec and initialize libavcodec.
