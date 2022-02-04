@@ -5,25 +5,34 @@
 //Provides some generic global options, which can be set on all the encoders and decoders.
 package avcodec
 
-//#cgo pkg-config: libavformat libavcodec libavutil libswresample
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <inttypes.h>
-//#include <stdint.h>
-//#include <string.h>
-//#include <libavformat/avformat.h>
-//#include <libavcodec/avcodec.h>
-//#include <libavutil/avutil.h>
-//#include <libavutil/frame.h>
-//void register_codecs(){
-//#if LIBAVCODEC_VERSION_MAJOR < 58
-//	  av_register_all();
-//	  avcodec_register_all();
-//#endif
-//}
-//
-//
-//
+/*
+#cgo pkg-config: libavformat libavcodec libavutil libswresample
+#include <stdio.h>
+#include <stdlib.h>
+#include <inttypes.h>
+#include <stdint.h>
+#include <string.h>
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
+#include <libavutil/avutil.h>
+#include <libavutil/frame.h>
+void register_codecs(){
+#if LIBAVCODEC_VERSION_MAJOR < 58
+	  av_register_all();
+	  avcodec_register_all();
+#endif
+}
+
+static inline int avcodec_profile_name_to_int(AVCodec *codec, const char *name) {
+	const AVProfile *p;
+	for (p = codec->profiles; p != NULL && p->profile != FF_PROFILE_UNKNOWN; p++)
+		if (!strcasecmp(p->name, name))
+			return p->profile;
+	return FF_PROFILE_UNKNOWN;
+}
+
+
+*/
 import "C"
 import (
 	"unsafe"
@@ -118,6 +127,109 @@ const (
 )
 
 const (
+	FF_PROFILE_UNKNOWN                               = -99
+	FF_PROFILE_RESERVED                              = -100
+	FF_PROFILE_AAC_MAIN                              = 0
+	FF_PROFILE_AAC_LOW                               = 1
+	FF_PROFILE_AAC_SSR                               = 2
+	FF_PROFILE_AAC_LTP                               = 3
+	FF_PROFILE_AAC_HE                                = 4
+	FF_PROFILE_AAC_HE_V2                             = 28
+	FF_PROFILE_AAC_LD                                = 22
+	FF_PROFILE_AAC_ELD                               = 38
+	FF_PROFILE_MPEG2_AAC_LOW                         = 128
+	FF_PROFILE_MPEG2_AAC_HE                          = 131
+	FF_PROFILE_DNXHD                                 = 0
+	FF_PROFILE_DNXHR_LB                              = 1
+	FF_PROFILE_DNXHR_SQ                              = 2
+	FF_PROFILE_DNXHR_HQ                              = 3
+	FF_PROFILE_DNXHR_HQX                             = 4
+	FF_PROFILE_DNXHR_444                             = 5
+	FF_PROFILE_DTS                                   = 20
+	FF_PROFILE_DTS_ES                                = 30
+	FF_PROFILE_DTS_96_24                             = 40
+	FF_PROFILE_DTS_HD_HRA                            = 50
+	FF_PROFILE_DTS_HD_MA                             = 60
+	FF_PROFILE_DTS_EXPRESS                           = 70
+	FF_PROFILE_MPEG2_422                             = 0
+	FF_PROFILE_MPEG2_HIGH                            = 1
+	FF_PROFILE_MPEG2_SS                              = 2
+	FF_PROFILE_MPEG2_SNR_SCALABLE                    = 3
+	FF_PROFILE_MPEG2_MAIN                            = 4
+	FF_PROFILE_MPEG2_SIMPLE                          = 5
+	FF_PROFILE_H264_CONSTRAINED                      = (1 << 9)  // 8+1; constraint_set1_flag
+	FF_PROFILE_H264_INTRA                            = (1 << 11) // 8+3; constraint_set3_flag
+	FF_PROFILE_H264_BASELINE                         = 66
+	FF_PROFILE_H264_CONSTRAINED_BASELINE             = (66 | FF_PROFILE_H264_CONSTRAINED)
+	FF_PROFILE_H264_MAIN                             = 77
+	FF_PROFILE_H264_EXTENDED                         = 88
+	FF_PROFILE_H264_HIGH                             = 100
+	FF_PROFILE_H264_HIGH_10                          = 110
+	FF_PROFILE_H264_HIGH_10_INTRA                    = (110 | FF_PROFILE_H264_INTRA)
+	FF_PROFILE_H264_MULTIVIEW_HIGH                   = 118
+	FF_PROFILE_H264_HIGH_422                         = 122
+	FF_PROFILE_H264_HIGH_422_INTRA                   = (122 | FF_PROFILE_H264_INTRA)
+	FF_PROFILE_H264_STEREO_HIGH                      = 128
+	FF_PROFILE_H264_HIGH_444                         = 144
+	FF_PROFILE_H264_HIGH_444_PREDICTIVE              = 244
+	FF_PROFILE_H264_HIGH_444_INTRA                   = (244 | FF_PROFILE_H264_INTRA)
+	FF_PROFILE_H264_CAVLC_444                        = 44
+	FF_PROFILE_VC1_SIMPLE                            = 0
+	FF_PROFILE_VC1_MAIN                              = 1
+	FF_PROFILE_VC1_COMPLEX                           = 2
+	FF_PROFILE_VC1_ADVANCED                          = 3
+	FF_PROFILE_MPEG4_SIMPLE                          = 0
+	FF_PROFILE_MPEG4_SIMPLE_SCALABLE                 = 1
+	FF_PROFILE_MPEG4_CORE                            = 2
+	FF_PROFILE_MPEG4_MAIN                            = 3
+	FF_PROFILE_MPEG4_N_BIT                           = 4
+	FF_PROFILE_MPEG4_SCALABLE_TEXTURE                = 5
+	FF_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION           = 6
+	FF_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE          = 7
+	FF_PROFILE_MPEG4_HYBRID                          = 8
+	FF_PROFILE_MPEG4_ADVANCED_REAL_TIME              = 9
+	FF_PROFILE_MPEG4_CORE_SCALABLE                   = 10
+	FF_PROFILE_MPEG4_ADVANCED_CODING                 = 11
+	FF_PROFILE_MPEG4_ADVANCED_CORE                   = 12
+	FF_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE       = 13
+	FF_PROFILE_MPEG4_SIMPLE_STUDIO                   = 14
+	FF_PROFILE_MPEG4_ADVANCED_SIMPLE                 = 15
+	FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0        = 1
+	FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1        = 2
+	FF_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION       = 32768
+	FF_PROFILE_JPEG2000_DCINEMA_2K                   = 3
+	FF_PROFILE_JPEG2000_DCINEMA_4K                   = 4
+	FF_PROFILE_VP9_0                                 = 0
+	FF_PROFILE_VP9_1                                 = 1
+	FF_PROFILE_VP9_2                                 = 2
+	FF_PROFILE_VP9_3                                 = 3
+	FF_PROFILE_HEVC_MAIN                             = 1
+	FF_PROFILE_HEVC_MAIN_10                          = 2
+	FF_PROFILE_HEVC_MAIN_STILL_PICTURE               = 3
+	FF_PROFILE_HEVC_REXT                             = 4
+	FF_PROFILE_VVC_MAIN_10                           = 1
+	FF_PROFILE_VVC_MAIN_10_444                       = 33
+	FF_PROFILE_AV1_MAIN                              = 0
+	FF_PROFILE_AV1_HIGH                              = 1
+	FF_PROFILE_AV1_PROFESSIONAL                      = 2
+	FF_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT            = 0xc0
+	FF_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT = 0xc1
+	FF_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT         = 0xc2
+	FF_PROFILE_MJPEG_HUFFMAN_LOSSLESS                = 0xc3
+	FF_PROFILE_MJPEG_JPEG_LS                         = 0xf7
+	FF_PROFILE_SBC_MSBC                              = 1
+	FF_PROFILE_PRORES_PROXY                          = 0
+	FF_PROFILE_PRORES_LT                             = 1
+	FF_PROFILE_PRORES_STANDARD                       = 2
+	FF_PROFILE_PRORES_HQ                             = 3
+	FF_PROFILE_PRORES_4444                           = 4
+	FF_PROFILE_PRORES_XQ                             = 5
+	FF_PROFILE_ARIB_PROFILE_A                        = 0
+	FF_PROFILE_ARIB_PROFILE_C                        = 1
+	FF_PROFILE_KLVA_SYNC                             = 0
+	FF_PROFILE_KLVA_ASYNC                            = 1
+)
+const (
 	FF_THREAD_FRAME = C.FF_THREAD_FRAME
 	FF_THREAD_SLICE = C.FF_THREAD_SLICE
 )
@@ -128,31 +240,36 @@ func (c *Codec) AvCodecGetMaxLowres() int {
 	//return int(C.av_codec_get_max_lowres((*C.struct_AVCodec)(c)))
 }
 
-//If c is NULL, returns the first registered codec, if c is non-NULL,
+// AvCodecNext If c is NULL, returns the first registered codec, if c is non-NULL,
 func (c *Codec) AvCodecNext() *Codec {
 	panic("deprecated")
 	return nil
 	//return (*Codec)(C.av_codec_next((*C.struct_AVCodec)(c)))
 }
 
-//Register all the codecs, parsers and bitstream filters which were enabled at configuration time.
+// AvcodecRegisterAll Register all the codecs, parsers and bitstream filters which were enabled at configuration time.
 func AvcodecRegisterAll() {
 	//for ffmpeg version < 4, not to call deprecated functions
 	C.register_codecs()
 }
 
-//Register the codec codec and initialize libavcodec.
+// AvcodecRegister Register the codec codec and initialize libavcodec.
 func (c *Codec) AvcodecRegister() {
 	panic("deprecated")
 	//C.avcodec_register((*C.struct_AVCodec)(c))
 }
 
-//Return a name for the specified profile, if available.
+// AvGetProfileName Return a name for the specified profile, if available.
 func (c *Codec) AvGetProfileName(p int) string {
 	return C.GoString(C.av_get_profile_name((*C.struct_AVCodec)(c), C.int(p)))
 }
 
-//Allocate an Context and set its fields to default values.
+// AvProfileNameToInt Return a int for the specified profile name, if available.
+func (c *Codec) AvProfileNameToInt(name string) int {
+	return int(C.avcodec_profile_name_to_int((*C.struct_AVCodec)(c), C.CString(name)))
+}
+
+// AvcodecAllocContext3 Allocate an Context and set its fields to default values.
 func (c *Codec) AvcodecAllocContext3() *Context {
 	return (*Context)(unsafe.Pointer(C.avcodec_alloc_context3((*C.struct_AVCodec)(c))))
 }
@@ -213,85 +330,85 @@ func (c *Codec) ChannelLayouts() []uint64 {
 	return r
 }
 
-//Same behaviour av_fast_malloc but the buffer has additional FF_INPUT_BUFFER_PADDING_SIZE at the end which will always be 0.
+// AvFastPaddedMalloc Same behaviour av_fast_malloc but the buffer has additional FF_INPUT_BUFFER_PADDING_SIZE at the end which will always be 0.
 func AvFastPaddedMalloc(p unsafe.Pointer, s *uint, t uintptr) {
 	C.av_fast_padded_malloc(p, (*C.uint)(unsafe.Pointer(s)), (C.size_t)(t))
 }
 
-//Return the LIBAvCODEC_VERSION_INT constant.
+// AvcodecVersion Return the LIBAvCODEC_VERSION_INT constant.
 func AvcodecVersion() uint {
 	return uint(C.avcodec_version())
 }
 
-//Return the libavcodec build-time configuration.
+// AvcodecConfiguration Return the libavcodec build-time configuration.
 func AvcodecConfiguration() string {
 	return C.GoString(C.avcodec_configuration())
 
 }
 
-//Return the libavcodec license.
+// AvcodecLicense Return the libavcodec license.
 func AvcodecLicense() string {
 	return C.GoString(C.avcodec_license())
 }
 
-//Get the Class for Context.
+// AvcodecGetClass Get the Class for Context.
 func AvcodecGetClass() *Class {
 	return (*Class)(C.avcodec_get_class())
 }
 
-//Get the Class for Frame.
+// AvcodecGetFrameClass Get the Class for Frame.
 func AvcodecGetFrameClass() *Class {
 	return (*Class)(C.avcodec_get_frame_class())
 }
 
-//Get the Class for AvSubtitleRect.
+// AvcodecGetSubtitleRectClass Get the Class for AvSubtitleRect.
 func AvcodecGetSubtitleRectClass() *Class {
 	return (*Class)(C.avcodec_get_subtitle_rect_class())
 }
 
-//Free all allocated data in the given subtitle struct.
+// AvsubtitleFree Free all allocated data in the given subtitle struct.
 func AvsubtitleFree(s *AvSubtitle) {
 	C.avsubtitle_free((*C.struct_AVSubtitle)(s))
 }
 
-//Pack a dictionary for use in side_data.
+// AvPacketPackDictionary Pack a dictionary for use in side_data.
 func AvPacketPackDictionary(d *avutil.Dictionary, s *int) *uint8 {
 	return (*uint8)(C.av_packet_pack_dictionary((*C.struct_AVDictionary)(d), (*C.int)(unsafe.Pointer(s))))
 }
 
-//Unpack a dictionary from side_data.
+// AvPacketUnpackDictionary Unpack a dictionary from side_data.
 func AvPacketUnpackDictionary(d *uint8, s int, dt **avutil.Dictionary) int {
 	return int(C.av_packet_unpack_dictionary((*C.uint8_t)(d), C.int(s), (**C.struct_AVDictionary)(unsafe.Pointer(dt))))
 }
 
-//Find a registered decoder with a matching codec ID.
+// AvcodecFindDecoder Find a registered decoder with a matching codec ID.
 func AvcodecFindDecoder(id CodecId) *Codec {
 	return (*Codec)(C.avcodec_find_decoder((C.enum_AVCodecID)(id)))
 }
 
-//Find a registered decoder with the specified name.
+// AvcodecFindDecoderByName Find a registered decoder with the specified name.
 func AvcodecFindDecoderByName(n string) *Codec {
 	cn := C.CString(n)
 	defer C.free(unsafe.Pointer(cn))
 	return (*Codec)(C.avcodec_find_decoder_by_name(cn))
 }
 
-//Converts AvChromaLocation to swscale x/y chroma position.
+// AvcodecEnumToChromaPos Converts AvChromaLocation to swscale x/y chroma position.
 func AvcodecEnumToChromaPos(x, y *int, l AvChromaLocation) int {
 	return int(C.avcodec_enum_to_chroma_pos((*C.int)(unsafe.Pointer(x)), (*C.int)(unsafe.Pointer(y)), (C.enum_AVChromaLocation)(l)))
 }
 
-//Converts swscale x/y chroma position to AvChromaLocation.
+// AvcodecChromaPosToEnum Converts swscale x/y chroma position to AvChromaLocation.
 func AvcodecChromaPosToEnum(x, y int) AvChromaLocation {
 	return (AvChromaLocation)(C.avcodec_chroma_pos_to_enum(C.int(x), C.int(y)))
 }
 
-//Find a registered encoder with a matching codec ID.
+// AvcodecFindEncoder Find a registered encoder with a matching codec ID.
 func AvcodecFindEncoder(id CodecId) *Codec {
 	return (*Codec)(C.avcodec_find_encoder((C.enum_AVCodecID)(id)))
 }
 
-//Find a registered encoder with the specified name.
+// AvcodecFindEncoderByName Find a registered encoder with the specified name.
 func AvcodecFindEncoderByName(c string) *Codec {
 	cc := C.CString(c)
 	defer C.free(unsafe.Pointer(cc))
@@ -310,37 +427,37 @@ func AvcodecString(b string, bs int, ctxt *Context, e int) {
 	C.avcodec_string(cb, C.int(bs), (*C.struct_AVCodecContext)(unsafe.Pointer(ctxt)), C.int(e))
 }
 
-//Fill Frame audio data and linesize pointers.
+// AvcodecFillAudioFrame Fill Frame audio data and line size pointers.
 func AvcodecFillAudioFrame(f *Frame, c int, s AvSampleFormat, b *uint8, bs, a int) int {
 	return int(C.avcodec_fill_audio_frame((*C.struct_AVFrame)(f), C.int(c), (C.enum_AVSampleFormat)(s), (*C.uint8_t)(b), C.int(bs), C.int(a)))
 }
 
-//Return codec bits per sample.
+// AvGetBitsPerSample Return codec bits per sample.
 func AvGetBitsPerSample(c CodecId) int {
 	return int(C.av_get_bits_per_sample((C.enum_AVCodecID)(c)))
 }
 
-//Return the PCM codec associated with a sample format.
+// AvGetPcmCodec Return the PCM codec associated with a sample format.
 func AvGetPcmCodec(f AvSampleFormat, b int) CodecId {
 	return (CodecId)(C.av_get_pcm_codec((C.enum_AVSampleFormat)(f), C.int(b)))
 }
 
-//Return codec bits per sample.
+// AvGetExactBitsPerSample Return codec bits per sample.
 func AvGetExactBitsPerSample(c CodecId) int {
 	return int(C.av_get_exact_bits_per_sample((C.enum_AVCodecID)(c)))
 }
 
-//Same behaviour av_fast_padded_malloc except that buffer will always be 0-initialized after call.
+// AvFastPaddedMallocz Same behaviour av_fast_padded_malloc except that buffer will always be 0-initialized after call.
 func AvFastPaddedMallocz(p unsafe.Pointer, s *uint, t uintptr) {
 	C.av_fast_padded_mallocz(p, (*C.uint)(unsafe.Pointer(s)), (C.size_t)(t))
 }
 
-//Encode extradata length to a buffer.
+// AvXiphlacing Encode extradata length to a buffer.
 func AvXiphlacing(s *string, v uint) uint {
 	return uint(C.av_xiphlacing((*C.uchar)(unsafe.Pointer(s)), (C.uint)(v)))
 }
 
-//If hwaccel is NULL, returns the first registered hardware accelerator, if hwaccel is non-NULL,
+// AvHwaccelNext If hwaccel is NULL, returns the first registered hardware accelerator, if hwaccel is non-NULL,
 //returns the next registered hardware accelerator after hwaccel, or NULL if hwaccel is the last one.
 func (a *AvHWAccel) AvHwaccelNext() *AvHWAccel {
 	panic("deprecated")
@@ -348,17 +465,17 @@ func (a *AvHWAccel) AvHwaccelNext() *AvHWAccel {
 	//return (*AvHWAccel)(C.av_hwaccel_next((*C.struct_AVHWAccel)(a)))
 }
 
-//Get the type of the given codec.
+// AvcodecGetType Get the type of the given codec.
 func AvcodecGetType(c CodecId) MediaType {
 	return (MediaType)(C.avcodec_get_type((C.enum_AVCodecID)(c)))
 }
 
-//Get the name of a codec.
+// AvcodecGetName Get the name of a codec.
 func AvcodecGetName(d CodecId) string {
 	return C.GoString(C.avcodec_get_name((C.enum_AVCodecID)(d)))
 }
 
-//const Descriptor *avcodec_descriptor_get (enum CodecId id)
+// AvcodecDescriptorGet const Descriptor *avcodec_descriptor_get (enum CodecId id)
 func AvcodecDescriptorGet(id CodecId) *Descriptor {
 	return (*Descriptor)(C.avcodec_descriptor_get((C.enum_AVCodecID)(id)))
 }
@@ -367,7 +484,7 @@ func (d *Descriptor) Name() string {
 	return C.GoString(d.name)
 }
 
-//Iterate over all codec descriptors known to libavcodec.
+// AvcodecDescriptorNext Iterate over all codec descriptors known to libavcodec.
 func (d *Descriptor) AvcodecDescriptorNext() *Descriptor {
 	return (*Descriptor)(C.avcodec_descriptor_next((*C.struct_AVCodecDescriptor)(d)))
 }

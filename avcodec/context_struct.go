@@ -119,6 +119,13 @@ func (ctxt *Context) Debug() int {
 func (ctxt *Context) DebugMv() int {
 	return int(ctxt.debug_mv)
 }
+func (ctxt *Context) SetDebug(debug int) {
+	ctxt.debug = C.int(debug)
+}
+
+func (ctxt *Context) SetDebugMv(debugMv int) {
+	ctxt.debug_mv = C.int(debugMv)
+}
 
 func (ctxt *Context) Delay() int {
 	return int(ctxt.delay)
@@ -379,7 +386,9 @@ func (ctxt *Context) PredictionMethod() int {
 func (ctxt *Context) Profile() int {
 	return int(ctxt.profile)
 }
-
+func (ctxt *Context) SetProfile(p int) {
+	ctxt.profile = C.int(p)
+}
 func (ctxt *Context) Qblur() float64 {
 	return float64(ctxt.qblur)
 }

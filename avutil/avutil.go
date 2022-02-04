@@ -61,9 +61,17 @@ func MediaTypeFromString(i string) MediaType {
 }
 
 const (
-	AV_CH_FRONT_LEFT    = 0x1
-	AV_CH_FRONT_RIGHT   = 0x2
-	AV_CH_LAYOUT_STEREO = 0x3 //(AV_CH_FRONT_LEFT | AV_CH_FRONT_RIGHT)
+	AV_CH_FRONT_LEFT           = C.AV_CH_FRONT_LEFT
+	AV_CH_FRONT_RIGHT          = C.AV_CH_FRONT_RIGHT
+	AV_CH_LAYOUT_STEREO        = C.AV_CH_LAYOUT_STEREO
+	AV_CH_LAYOUT_MONO          = C.AV_CH_LAYOUT_MONO
+	AV_CH_LAYOUT_SURROUND      = C.AV_CH_LAYOUT_SURROUND
+	AV_CH_LAYOUT_QUAD          = C.AV_CH_LAYOUT_QUAD
+	AV_CH_LAYOUT_5POINT0_BACK  = C.AV_CH_LAYOUT_5POINT0_BACK
+	AV_CH_LAYOUT_5POINT1_BACK  = C.AV_CH_LAYOUT_5POINT1_BACK
+	AV_CH_LAYOUT_6POINT1       = C.AV_CH_LAYOUT_6POINT1
+	AV_CH_LAYOUT_7POINT1       = C.AV_CH_LAYOUT_7POINT1
+	AV_CH_LAYOUT_HEXADECAGONAL = C.AV_CH_LAYOUT_HEXADECAGONAL
 )
 
 const (
@@ -87,42 +95,42 @@ const (
 	AV_PICTURE_TYPE_P    = C.AV_PICTURE_TYPE_P
 )
 
-//Return the LIBAvUTIL_VERSION_INT constant.
+// AvutilVersion Return the LIBAvUTIL_VERSION_INT constant.
 func AvutilVersion() uint {
 	return uint(C.avutil_version())
 }
 
-//Return the libavutil build-time configuration.
+// AvutilConfiguration Return the libavutil build-time configuration.
 func AvutilConfiguration() string {
 	return C.GoString(C.avutil_configuration())
 }
 
-//Return the libavutil license.
+// AvutilLicense Return the libavutil license.
 func AvutilLicense() string {
 	return C.GoString(C.avutil_license())
 }
 
-//Return a string describing the media_type enum, NULL if media_type is unknown.
+// AvGetMediaTypeString Return a string describing the media_type enum, NULL if media_type is unknown.
 func AvGetMediaTypeString(mt MediaType) string {
 	return C.GoString(C.av_get_media_type_string((C.enum_AVMediaType)(mt)))
 }
 
-//Return a single letter to describe the given picture type pict_type.
+// AvGetPictureTypeChar Return a single letter to describe the given picture type pict_type.
 func AvGetPictureTypeChar(pt AvPictureType) string {
 	return string(C.av_get_picture_type_char((C.enum_AVPictureType)(pt)))
 }
 
-//Return x default pointer in case p is NULL.
+// AvXIfNull Return x default pointer in case p is NULL.
 func AvXIfNull(p, x int) {
 	C.av_x_if_null(unsafe.Pointer(&p), unsafe.Pointer(&x))
 }
 
-//Compute the length of an integer list.
+// AvIntListLengthForSize Compute the length of an integer list.
 func AvIntListLengthForSize(e uint, l int, t uint64) uint {
 	return uint(C.av_int_list_length_for_size(C.uint(e), unsafe.Pointer(&l), (C.uint64_t)(t)))
 }
 
-//Open a file using a UTF-8 filename.
+// AvFopenUtf8 Open a file using a UTF-8 filename.
 func AvFopenUtf8(p, m string) *File {
 	cp := C.CString(p)
 	defer C.free(unsafe.Pointer(cp))
@@ -132,7 +140,7 @@ func AvFopenUtf8(p, m string) *File {
 	return (*File)(f)
 }
 
-//Return the fractional representation of the internal time base.
+// AvGetTimeBaseQ Return the fractional representation of the internal time base.
 func AvGetTimeBaseQ() Rational {
 	return (Rational)(C.av_get_time_base_q())
 }
