@@ -497,6 +497,10 @@ func (ctxt *Context) SpatialCplxMasking() float64 {
 	return float64(ctxt.spatial_cplx_masking)
 }
 
+func (ctxt *Context) SetStrictStdCompliance(strictStdCompliance int) {
+	ctxt.strict_std_compliance = C.int(strictStdCompliance)
+}
+
 func (ctxt *Context) StrictStdCompliance() int {
 	return int(ctxt.strict_std_compliance)
 }

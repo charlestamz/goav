@@ -234,6 +234,10 @@ const (
 	FF_THREAD_SLICE = C.FF_THREAD_SLICE
 )
 
+const (
+	FF_COMPLIANCE_EXPERIMENTAL = C.FF_COMPLIANCE_EXPERIMENTAL
+)
+
 func (c *Codec) AvCodecGetMaxLowres() int {
 	panic("deprecated")
 	return 0

@@ -187,6 +187,10 @@ func (ctxt *Context) Seek2any() int {
 	return int(ctxt.seek2any)
 }
 
+func (ctxt *Context) SetStrictStdCompliance(strictStdCompliance int) {
+	ctxt.strict_std_compliance = C.int(strictStdCompliance)
+}
+
 func (ctxt *Context) StrictStdCompliance() int {
 	return int(ctxt.strict_std_compliance)
 }
